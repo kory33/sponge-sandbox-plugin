@@ -25,11 +25,16 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
+
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    embed "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     compile 'org.spongepowered:spongeapi:7.0.0'
-    compile 'io.reactivex:rxjava:1.3.4'
+    embed 'io.reactivex:rxjava:1.3.4'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
@@ -37,6 +42,11 @@ dependencies {
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+jar {
+    from configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
 }
