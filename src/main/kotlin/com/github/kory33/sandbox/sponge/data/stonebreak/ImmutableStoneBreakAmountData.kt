@@ -8,6 +8,8 @@ import org.spongepowered.api.data.value.immutable.ImmutableValue
 class ImmutableStoneBreakAmountData(private val amount: Int):
         AbstractImmutableSingleData<Int, ImmutableStoneBreakAmountData, StoneBreakAmountData>(amount, KeyRepository.breakAmount) {
 
+    operator fun plus(amount: Int) = ImmutableStoneBreakAmountData(getValue() + amount)
+
     override fun getContentVersion() = StoneBreakAmountDataBuilder.CONTENT_VERSION
 
     override fun asMutable() = StoneBreakAmountData(amount)

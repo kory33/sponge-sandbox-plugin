@@ -14,6 +14,8 @@ class StoneBreakAmountData(private val amount: Int):
 
     constructor(): this(0)
 
+    operator fun plus(amount: Int): StoneBreakAmountData = StoneBreakAmountData(super.getValue() + amount)
+
     override fun from(container: DataContainer): Optional<StoneBreakAmountData> = container
             .getObject(KeyRepository.breakAmount.query, Int::class.java)
             .map { setValue(it) }
