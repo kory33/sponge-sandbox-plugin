@@ -5,11 +5,12 @@ import com.github.kory33.sandbox.sponge.data.stonebreak.StoneBreakAmountData
 import com.github.kory33.sandbox.sponge.data.stonebreak.StoneBreakAmountDataBuilder
 import org.spongepowered.api.Game
 import org.spongepowered.api.data.DataRegistration
+import org.spongepowered.api.entity.living.player.Player
 import org.spongepowered.api.event.Listener
+import org.spongepowered.api.event.block.ChangeBlockEvent
 import org.spongepowered.api.event.game.state.GameInitializationEvent
 import org.spongepowered.api.plugin.Plugin
 import org.spongepowered.api.plugin.PluginContainer
-import rx.Observable
 import javax.inject.Inject
 
 @Plugin(id=SpongeSandboxPlugin.ID, name="Sponge Sandbox Plugin")
@@ -27,6 +28,17 @@ class SpongeSandboxPlugin {
                 .manipulatorId("break-amount")
                 .dataName("Break Amount")
                 .buildAndRegister(container)
+    }
+
+    @Listener
+    fun onStoneBreak(event: ChangeBlockEvent.Break) {
+        val causePlayer = event.cause.mapNotNull { it as? Player }.firstOrNull() ?: return
+
+        causePlayer.getOrCreate(StoneBreakAmountData::class.java).ifPresent { data ->
+            causePlayer.offer(data + 1)
+        }
+
+        causePlayer.get(KeyRepository.breakAmount).ifPresent { println(it) }
     }
 
     companion object {
