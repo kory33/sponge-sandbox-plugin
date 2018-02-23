@@ -4,6 +4,10 @@ import com.github.kory33.sandbox.sponge.data.stonebreak.ImmutableStoneBreakAmoun
 import com.github.kory33.sandbox.sponge.data.stonebreak.StoneBreakAmountData
 import com.github.kory33.sandbox.sponge.data.stonebreak.StoneBreakAmountDataBuilder
 import org.spongepowered.api.Game
+import org.spongepowered.api.Sponge
+import org.spongepowered.api.block.BlockSnapshot
+import org.spongepowered.api.block.BlockType
+import org.spongepowered.api.block.BlockTypes
 import org.spongepowered.api.data.DataRegistration
 import org.spongepowered.api.entity.living.player.Player
 import org.spongepowered.api.event.Listener
@@ -21,10 +25,14 @@ class SpongeSandboxPlugin {
 
     @Listener
     fun onInit(event: GameInitializationEvent) {
+        val dataManager = Sponge.getDataManager()
+
+        dataManager.registerContentUpdater(StoneBreakAmountData::class.java, StoneBreakAmountDataBuilder.ContentUpdater)
+
         DataRegistration.builder()
                 .dataClass(StoneBreakAmountData::class.java)
                 .immutableClass(ImmutableStoneBreakAmountData::class.java)
-                .builder(StoneBreakAmountDataBuilder())
+                .builder(StoneBreakAmountDataBuilder)
                 .manipulatorId("break-amount")
                 .dataName("Break Amount")
                 .buildAndRegister(container)
@@ -34,10 +42,16 @@ class SpongeSandboxPlugin {
     fun onStoneBreak(event: ChangeBlockEvent.Break) {
         val causePlayer = event.cause.mapNotNull { it as? Player }.firstOrNull() ?: return
 
-        causePlayer.getOrCreate(StoneBreakAmountData::class.java).map { it + 1 }.ifPresent {
-            causePlayer.offer(it)
-            println(it.amount)
-        }
+        val brokeStoneNumber = event.transactions
+                .filter { it.original.state.type == BlockTypes.STONE }
+                .size
+
+        causePlayer.getOrCreate(StoneBreakAmountData::class.java)
+                .map { it + brokeStoneNumber }
+                .ifPresent {
+                    causePlayer.offer(it)
+                    println(it.amount)
+                }
     }
 
     companion object {

@@ -28,7 +28,7 @@ class StoneBreakAmountData(val amount: Int):
         return setValue(merged.value).let { Optional.of(it) }
     }
 
-    override fun getContentVersion() = StoneBreakAmountDataBuilder.CONTENT_VERSION
+    override fun getContentVersion() = StoneBreakAmountDataBuilder.contentVersion
 
     override fun asImmutable() = ImmutableStoneBreakAmountData(amount)
 

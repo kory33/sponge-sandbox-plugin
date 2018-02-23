@@ -10,7 +10,7 @@ class ImmutableStoneBreakAmountData(private val amount: Int):
 
     operator fun plus(amount: Int) = ImmutableStoneBreakAmountData(getValue() + amount)
 
-    override fun getContentVersion() = StoneBreakAmountDataBuilder.CONTENT_VERSION
+    override fun getContentVersion() = StoneBreakAmountDataBuilder.contentVersion
 
     override fun asMutable() = StoneBreakAmountData(amount)
 

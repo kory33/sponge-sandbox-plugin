@@ -5,9 +5,13 @@ import org.spongepowered.api.data.DataHolder
 import org.spongepowered.api.data.DataView
 import org.spongepowered.api.data.manipulator.DataManipulatorBuilder
 import org.spongepowered.api.data.persistence.AbstractDataBuilder
+import org.spongepowered.api.data.persistence.DataContentUpdater
 import java.util.*
 
-class StoneBreakAmountDataBuilder:
+
+private const val CONTENT_VERSION = 1
+
+object StoneBreakAmountDataBuilder:
         AbstractDataBuilder<StoneBreakAmountData>(StoneBreakAmountData::class.java, CONTENT_VERSION),
         DataManipulatorBuilder<StoneBreakAmountData, ImmutableStoneBreakAmountData> {
 
@@ -19,7 +23,15 @@ class StoneBreakAmountDataBuilder:
 
     override fun create() = StoneBreakAmountData()
 
-    companion object {
-        const val CONTENT_VERSION = 1
+    object ContentUpdater: DataContentUpdater {
+
+        override fun getInputVersion() = contentVersion
+
+        override fun getOutputVersion() = contentVersion
+
+        override fun update(content: DataView): DataView = content.set(KeyRepository.breakAmount, 0)
+
     }
+
+    const val contentVersion = CONTENT_VERSION
 }
