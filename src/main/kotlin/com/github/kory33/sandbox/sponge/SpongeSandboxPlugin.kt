@@ -34,11 +34,10 @@ class SpongeSandboxPlugin {
     fun onStoneBreak(event: ChangeBlockEvent.Break) {
         val causePlayer = event.cause.mapNotNull { it as? Player }.firstOrNull() ?: return
 
-        causePlayer.getOrCreate(StoneBreakAmountData::class.java).ifPresent { data ->
-            causePlayer.offer(data + 1)
+        causePlayer.getOrCreate(StoneBreakAmountData::class.java).map { it + 1 }.ifPresent {
+            causePlayer.offer(it)
+            println(it.amount)
         }
-
-        causePlayer.get(KeyRepository.breakAmount).ifPresent { println(it) }
     }
 
     companion object {

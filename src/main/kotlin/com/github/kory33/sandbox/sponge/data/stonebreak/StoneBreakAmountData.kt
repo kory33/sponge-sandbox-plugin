@@ -9,7 +9,7 @@ import org.spongepowered.api.data.merge.MergeFunction
 import org.spongepowered.api.data.value.mutable.Value
 import java.util.*
 
-class StoneBreakAmountData(private val amount: Int):
+class StoneBreakAmountData(val amount: Int):
         AbstractSingleData<Int, StoneBreakAmountData, ImmutableStoneBreakAmountData>(amount, KeyRepository.breakAmount) {
 
     constructor(): this(0)

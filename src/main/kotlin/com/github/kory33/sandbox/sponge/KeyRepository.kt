@@ -8,7 +8,7 @@ import org.spongepowered.api.util.TypeTokens
 object KeyRepository {
     val breakAmount: Key<Value<Int>> = Key.builder()
             .type(TypeTokens.INTEGER_VALUE_TOKEN)
-            .id("${SpongeSandboxPlugin.ID}:break_amount")
+            .id("break_amount")
             .name("Break Amount")
             .query(DataQuery.of("BreakAmount"))
             .build()
