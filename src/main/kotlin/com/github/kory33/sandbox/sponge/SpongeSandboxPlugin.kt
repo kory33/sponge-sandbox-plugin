@@ -11,6 +11,7 @@ import org.spongepowered.api.block.BlockTypes
 import org.spongepowered.api.data.DataRegistration
 import org.spongepowered.api.entity.living.player.Player
 import org.spongepowered.api.event.Listener
+import org.spongepowered.api.event.Order
 import org.spongepowered.api.event.block.ChangeBlockEvent
 import org.spongepowered.api.event.game.state.GameInitializationEvent
 import org.spongepowered.api.plugin.Plugin
@@ -38,12 +39,12 @@ class SpongeSandboxPlugin {
                 .buildAndRegister(container)
     }
 
-    @Listener
+    @Listener(order=Order.POST)
     fun onStoneBreak(event: ChangeBlockEvent.Break) {
         val causePlayer = event.cause.mapNotNull { it as? Player }.firstOrNull() ?: return
 
         val brokeStoneNumber = event.transactions
-                .filter { it.original.state.type == BlockTypes.STONE }
+                .filter { it.isValid && it.original.state.type == BlockTypes.STONE }
                 .size
 
         causePlayer.getOrCreate(StoneBreakAmountData::class.java)
