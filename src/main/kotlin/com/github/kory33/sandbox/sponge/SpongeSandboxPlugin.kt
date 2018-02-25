@@ -34,8 +34,8 @@ class SpongeSandboxPlugin {
                 .dataClass(StoneBreakAmountData::class.java)
                 .immutableClass(ImmutableStoneBreakAmountData::class.java)
                 .builder(StoneBreakAmountDataBuilder)
-                .manipulatorId("break-amount")
-                .dataName("Break Amount")
+                .manipulatorId("{break-amount|")
+                .dataName("Break")
                 .buildAndRegister(container)
     }
 

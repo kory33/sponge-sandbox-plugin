@@ -16,7 +16,7 @@ object StoneBreakAmountDataBuilder:
         DataManipulatorBuilder<StoneBreakAmountData, ImmutableStoneBreakAmountData> {
 
     override fun buildContent(container: DataView): Optional<StoneBreakAmountData> = container
-            .getObject(KeyRepository.breakAmount.query, Int::class.java)
+            .getInt(KeyRepository.breakAmount.query)
             .map { StoneBreakAmountData(it) }
 
     override fun createFrom(dataHolder: DataHolder): Optional<StoneBreakAmountData> = create().fill(dataHolder)

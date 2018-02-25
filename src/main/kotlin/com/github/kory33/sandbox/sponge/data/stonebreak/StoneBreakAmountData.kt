@@ -35,4 +35,6 @@ class StoneBreakAmountData(val amount: Int):
     override fun getValueGetter(): Value<*> = Sponge.getRegistry().valueFactory
             .createValue(KeyRepository.breakAmount, amount)
 
+    override fun toContainer(): DataContainer = super.toContainer().set(KeyRepository.breakAmount, amount)
+
 }
